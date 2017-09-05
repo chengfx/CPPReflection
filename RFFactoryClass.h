@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <iostream>
 
 namespace reflection{
   
@@ -16,7 +17,15 @@ namespace reflection{
     void* getClassByName(std::string className);
     void registClass(std::string name, CreateFunctionPtr method);
     static RFFactoryClass& sharedFactoryClass();
-
+    int getClassNum(){return m_classMap.size();}
+    int display()
+    {
+      for(auto& iter : m_classMap)
+      {
+        std::cout << "ClassName:" << iter.first
+	<< " FunctionPtr: " << std::hex << (long long)(iter.second) << std::endl;
+      }
+    }
   private:
     std::map<std::string, CreateFunctionPtr> m_classMap;
   };
@@ -32,10 +41,10 @@ namespace reflection{
   };
  
   #define DECLARE_CLASS(className) \
-  static RFRegisterClass* m_##className##RF
+  static RFRegisterClass* m_classNameRF
 
   #define REGISTER_CLASS(className) \
-  RFRegisterClass* className::m_##className##RF = \
+  RFRegisterClass* className::m_classNameRF = \
   new RFRegisterClass(#className, className::createInstance)
 }
 
