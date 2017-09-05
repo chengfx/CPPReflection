@@ -1,24 +1,24 @@
-#ifndef __REFLECTION_H__
-#define __REFLECTION_H__
+#ifndef __RF_FACTORY_CLASS_H__
+#define __RF_FACTORY_CLASS_H__
 
 #include <string>
 #include <map>
 
 namespace reflection{
   
-  typedef void* (*createClass)(void);
+  typedef void* (*CreateFunctionPtr)(void);
   
-  class CKClassFactory
+  class RFFactoryClass
   {
   public:
-    CKClassFactory();
-    virtual ~CKClassFactory();
+    RFFactoryClass();
+    virtual ~RFFactoryClass();
     void* getClassByName(std::string className);
-    void registClass(std::string name, createClass method);
-    static CKClassFactory& sharedClassFactory();
+    void registClass(std::string name, CreateFunctionPtr method);
+    static RFFactoryClass& sharedFactoryClass();
 
   private:
-    std::map<std::string, createClass> m_classMap;
+    std::map<std::string, CreateFunctionPtr> m_classMap;
   };
 
 
