@@ -1,10 +1,9 @@
 #include "RFFactoryClass.h"
 #include <string>
 #include <map>
+using namespace std;
 
 namespace reflection{
-
-  using namespace std;
 
   void* RFFactoryClass::getClassByName(string className)
   {

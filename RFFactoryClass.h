@@ -11,8 +11,8 @@ namespace reflection{
   class RFFactoryClass
   {
   public:
-    RFFactoryClass();
-    virtual ~RFFactoryClass();
+    RFFactoryClass(){}
+    virtual ~RFFactoryClass(){}
     void* getClassByName(std::string className);
     void registClass(std::string name, CreateFunctionPtr method);
     static RFFactoryClass& sharedFactoryClass();
@@ -20,8 +20,23 @@ namespace reflection{
   private:
     std::map<std::string, CreateFunctionPtr> m_classMap;
   };
+  
+  //Regist class
+  class RFRegisterClass
+  {
+  public:
+    RFRegisterClass(std::string name, CreateFunctionPtr method)
+    {
+      RFFactoryClass::sharedFactoryClass().registClass(name, method);
+    }
+  };
+ 
+  #define DECLARE_CLASS(className) \
+  static RFRegisterClass* m_##className##RF
 
-
+  #define REGISTER_CLASS(className) \
+  RFRegisterClass* className::m_##className##RF = \
+  new RFRegisterClass(#className, className::createInstance)
 }
 
 #endif
